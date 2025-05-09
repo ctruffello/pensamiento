@@ -1,0 +1,85 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Imagen centrada */
+#campamento-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#campamento-img {
+    max-width: 50%;
+    max-height: 50%;
+    object-fit: contain;
+    display: block;
+}
+
+#niño-img {
+    position: absolute;
+    bottom: 20%;
+    right: 10%;
+    width: 240px;
+    height: auto;
+    max-width: 200%;
+    max-height: 200%;
+    object-fit: contain;
+    display: block;
+}
+
+#globo-texto {
+    position: absolute;
+    bottom: 50%; /* Ajusta la posición según lo desees */
+    right: 13%;
+    width: 240px; /* Tamaño reducido para asegurar que el texto cabe */
+    height: auto;
+    padding: 50px;
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center; /* Asegura que el texto esté centrado */
+    line-height: 1.2; /* Ajuste de espacio entre líneas */
+    overflow: hidden; /* Esconde el contenido que se desborde */
+    background-color: transparent; /* Fondo transparente para la burbuja */
+}
+
+#globo_texto-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* Asegura que la imagen ocupe todo el espacio de la burbuja */
+    height: 100%;
+    /*object-fit: contain;*/
+    z-index: 0; /* Pone la imagen detrás del texto */
+}
+
+#texto-dinamico {
+    position: relative;
+    z-index: 1; /* Asegura que el texto esté encima de la imagen */
+    color: #000;
+    font-size: 14px; /* Ajusta el tamaño de la fuente */
+    line-height: 1.4; /* Espaciado entre líneas */
+    font-weight: bold;
+    max-width: 100%; /* Evita que el texto se salga de la burbuja */
+    word-wrap: break-word; /* Permite que el texto se ajuste */
+    padding: 0 4px; /* Asegura que el texto no toque los bordes */
+    text-align: center; /* Centra el texto dentro de la burbuja */
+}
