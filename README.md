@@ -1,4 +1,3 @@
 # pensamiento
 
 hoooooolaaaaaaaaa
-probando
