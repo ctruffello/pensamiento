@@ -1,46 +1,97 @@
-body, html {
+/* Estilos base */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-    height: 100%;
-    width: 100%;
-    font-family: sans-serif;
-    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
 }
 
-.container {
-    position: relative;
-    width: 100%;
+.pantalla-inicial {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     height: 100vh;
+    width: 100%;
+}
+
+#cuadrado-campamentos {
+    width: 400px;
+    height: 400px;
+    position: relative;
+    border: 2px solid #333;
+    margin: 20px auto; /* Centrado horizontal */
+    display: none;
+    background-color: white;
     overflow: hidden;
 }
 
-/* Imagen centrada */
-#campamento-container {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
+#controls-container {
+    display: none;
+    flex-direction: column;
     align-items: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-#campamento-img {
-    max-width: 50%;
-    max-height: 50%;
-    object-fit: contain;
-    display: block;
+#ano-slider {
+    width: 80%;
+    margin: 20px 0;
+}
+
+#ano-label {
+    font-size: 18px;
+    font-weight: bold;
+    display: none;
+}
+
+#texto-dinamico {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    margin: 20px 0;
+    display: none;
+}
+
+#ano-value {
+    font-size: 18px;
+    text-align: center;
+    display: none;
+}
+
+.punto {
+    width: 10px;
+    height: 10px;
+    background-color: #3b8e4f;
+    border-radius: 50%;
+    position: absolute;
+    opacity: 0; /* Inicialmente transparentes */
+    transform: scale(0.5); /* Empiezan más pequeños */
+    animation: aparecerPunto 0.8s ease-out forwards;
+}
+
+@keyframes aparecerPunto {
+    to {
+        opacity: 1; /* Terminan completamente visibles */
+        transform: scale(1); /* Tamaño normal */
+    }
 }
 
 #niño-img {
     position: absolute;
     bottom: 20%;
     right: 10%;
-    width: 240px;
+    width: 180px;
     height: auto;
-    max-width: 200%;
-    max-height: 200%;
     object-fit: contain;
-    display: block;
 }
 
 #globo-texto {
@@ -67,11 +118,10 @@ body, html {
     left: 0;
     width: 100%; /* Asegura que la imagen ocupe todo el espacio de la burbuja */
     height: 100%;
-    /*object-fit: contain;*/
     z-index: 0; /* Pone la imagen detrás del texto */
 }
 
-#texto-dinamico {
+#texto-dinamico-globo {
     position: relative;
     z-index: 1; /* Asegura que el texto esté encima de la imagen */
     color: #000;
