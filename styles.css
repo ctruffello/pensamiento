@@ -20,6 +20,10 @@ body {
     transition: opacity 0.5s ease;
 }
 
+#niño-container.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
 /* Globo de texto */
 #globo-texto {
     position: relative;
@@ -153,4 +157,17 @@ body {
 .tooltip:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
+}
+#espera-acumulada {
+    display: none; /* Ya lo tienes */
+    text-align: center;
+    margin: 20px auto; /* Centrado horizontal con margen */
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%; /* Ocupa todo el ancho disponible */
+    position: relative; /* Para posicionamiento absoluto de hijos si es necesario */
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente opcional */
+    border-radius: 8px; /* Bordes redondeados opcionales */
+    max-width: 400px; /* Ancho máximo para mejor lectura */
 }
