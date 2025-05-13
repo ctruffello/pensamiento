@@ -1,43 +1,106 @@
-// Datos de campamentos por año
+///////////////////////////////////////////////// Datos de campamentos por año
 const datosCampamentos = [
     { año: 2013, campamentos: 691, mensaje: "acá vivo y estos son mis vecinos" },
-    { año: 2014, campamentos: 681, mensaje: ""},
-    { año: 2015, campamentos: 693, mensaje: ""},
+    { año: 2014, campamentos: 681, mensaje: "" },
+    { año: 2015, campamentos: 693, mensaje: "" },
     { año: 2016, campamentos: 660, mensaje: "" },
     { año: 2017, campamentos: 702, mensaje: "" },
     { año: 2018, campamentos: 741, mensaje: "" },
     { año: 2019, campamentos: 802, mensaje: "" },
-    { año: 2020, campamentos: 969, mensaje: "En este último tiempo ha llegado mucha gente nueva al campamento, esto está muy relacionado a que hay una pandemia y la tasa de desempleo ha aumetado" },
+    {
+        año: 2020,
+        campamentos: 969,
+        mensaje: `En este último tiempo ha llegado mucha gente nueva al campamento, esto está muy relacionado a que hay una pandemia y la <span class="tooltip">tasa de desempleo<span class="tooltiptext">1000 personas sin empleo</span></span> ha aumentado`
+    },
     { año: 2021, campamentos: 969, mensaje: "" },
     { año: 2022, campamentos: 1290, mensaje: "" },
     { año: 2023, campamentos: 1290, mensaje: "" },
-    { año: 2024, campamentos: 1428, mensaje: "Actualmente han llegado nuevos vecinos y se han ido otros. Yo ya llevo mucho tiempo en este campamento y no sé cuanto timepo seguiré acá" }
+    { año: 2024, campamentos: 1428, mensaje: "Actualmente han llegado nuevos vecinos y se han ido otros. Yo ya llevo mucho tiempo en este campamento y no sé cuanto tiempo seguiré acá" }
 ];
 
-// Función para generar puntos aleatorios dentro del cuadrado
+///////////////////////////////////////////////////// Datos de familias por año
+const familiasPorAnyo = [
+    30353, 29693, 36023, 38770, 40541, 43003, 47050,
+    81643, 81643, 113887, 113887, 142482 // se añadió 2024
+];
+
+//////////////////////////////// Promedio de años de espera (en años)
+const promedioAnosEspera = 11;
+
+/////////////////////////////////////////////////////////////// Valor base inicial
+const valorBaseInicial = 72.576; // Inicia años acumulados en 2013
+
+//////////////////////////// Función para actualizar el contador de espera
+function actualizarContador() {
+    const slider = document.getElementById("ano-slider");
+    const ano = parseInt(slider.value);
+
+    let totalAnos = valorBaseInicial;
+
+    for (let i = 0; i <= ano; i++) {
+        totalAnos += familiasPorAnyo[i] * promedioAnosEspera;
+    }
+
+    document.getElementById("contador-espera").textContent = totalAnos.toLocaleString();
+}
+
+///////////////////////// Función para generar puntos aleatorios
+///////////////////////// Función para generar puntos aleatorios
 function generarPuntos(cantidad) {
     const cuadrado = document.getElementById("cuadrado-campamentos");
     const ancho = cuadrado.offsetWidth;
     const alto = cuadrado.offsetHeight;
 
-    cuadrado.innerHTML = ""; // Limpiar puntos previos
+    cuadrado.innerHTML = ""; // Limpiar
 
-    // Generar los puntos aleatorios
     for (let i = 0; i < cantidad; i++) {
-        const punto = document.createElement("div");
-        punto.classList.add("punto");
+        const contenedor = document.createElement("div");
+        contenedor.classList.add("punto-contenedor");
+        
+        const img = document.createElement("img");
+        img.src = "img/casita.png";
+        img.classList.add("imagen-punto");
 
-        const x = Math.random() * (ancho - 10);
-        const y = Math.random() * (alto - 10);
+        // Posicionamiento aleatorio
+        const x = Math.random() * (ancho - 30); // Restar el ancho aproximado de la imagen
+        const y = Math.random() * (alto - 30); // Restar el alto aproximado de la imagen
 
-        punto.style.left = `${x}px`;
-        punto.style.top = `${y}px`;
+        contenedor.style.position = "absolute";
+        contenedor.style.left = `${x}px`;
+        contenedor.style.top = `${y}px`;
+        contenedor.style.width = "30px"; // Ajustar según tamaño de tu imagen
+        contenedor.style.height = "30px"; // Ajustar según tamaño de tu imagen
 
-        cuadrado.appendChild(punto); // Añadir punto al contenedor
+        contenedor.appendChild(img);
+        cuadrado.appendChild(contenedor);
     }
 }
+//////////////////////// Función para actualizar el año y mensaje
+function actualizarAño() {
+    const index = parseInt(document.getElementById("ano-slider").value);
+    const { año, campamentos, mensaje } = datosCampamentos[index];
 
-// Función principal para iniciar la experiencia
+    generarPuntos(Math.round(campamentos / 4));
+    document.getElementById("ano-value").textContent = año;
+
+    const textoGlobo = document.getElementById("texto-dinamico-globo");
+
+    if (mensaje && mensaje.trim() !== "") {
+        textoGlobo.innerHTML = mensaje;
+    } else {
+        textoGlobo.innerHTML = `Estamos en el año ${año}.`;
+    }
+
+    actualizarContador(); // también actualizar contador al mover el año
+}
+
+//////////////////////// Función para mostrar el valor del año en el slider
+function actualizarValorSlider() {
+    const slider = document.getElementById("ano-slider");
+    document.getElementById("ano-value").textContent = 2013 + parseInt(slider.value);
+}
+
+//////////////////////// Función para iniciar la experiencia
 function iniciarExperiencia() {
     document.querySelector('.pantalla-inicial').style.display = 'none';
     document.getElementById('cuadrado-campamentos').style.display = 'block';
@@ -45,36 +108,12 @@ function iniciarExperiencia() {
     document.getElementById('controls-container').style.display = 'flex';
     document.getElementById('ano-label').style.display = 'block';
     document.getElementById('ano-value').style.display = 'block';
-    actualizarAño(); // Llamar la función para cargar los puntos del primer año
+    document.getElementById("espera-acumulada").style.display = "block";
+
+    actualizarAño();
 }
 
-// Función para actualizar los puntos según el año seleccionado
-function actualizarAño() {
-    const index = document.getElementById("ano-slider").value;
-    const { año, campamentos, mensaje } = datosCampamentos[index];
-
-    generarPuntos(campamentos);
-    document.getElementById("ano-value").textContent = año;
-
-    const textoGlobo = document.getElementById("texto-dinamico-globo");
-
-    // Si hay un mensaje definido, lo mostramos. Si no, usamos mensaje por defecto.
-    if (mensaje && mensaje.trim() !== "") {
-        textoGlobo.innerHTML = mensaje;
-    } else {
-        textoGlobo.innerHTML = `Estamos en el año ${año}.`;
-    }
-}
-
-
-// Inicialización
-window.onload = () => {
-    mostrarSiguienteTexto(); // Comienza el texto dinámico
-    // Añadir el evento al slider para actualizar el año
-    document.getElementById("ano-slider").addEventListener("input", actualizarAño);
-};
-
-// Textos para la experiencia interactiva
+/////////////////////////// Textos de bienvenida
 const textos = [
     "Hola, bienvenido a nuestro recorrido.",
     "Aquí aprenderás sobre los campamentos en Chile.",
@@ -86,37 +125,44 @@ let indiceLetra = 0;
 let intervalo;
 const contenedorTexto = document.getElementById("texto-dinamico-globo");
 
-// Función para escribir el texto dinámico
+
 function escribirTexto() {
     const textoActual = textos[indiceTexto];
-    if (indiceLetra < textoActual.length) {
+    contenedorTexto.innerHTML = "";
+    indiceLetra = 0;
+
+    intervalo = setInterval(() => {
         contenedorTexto.innerHTML += textoActual.charAt(indiceLetra);
         indiceLetra++;
-    } else {
-        clearInterval(intervalo); // Detenemos la escritura
-        contenedorTexto.style.cursor = 'pointer'; // Cambiamos el cursor para indicar que se puede hacer clic
-        contenedorTexto.addEventListener('click', avanzarTexto); // Escuchamos el clic para avanzar
-    }
+        if (indiceLetra >= textoActual.length) {
+            clearInterval(intervalo);
+        }
+    }, 50);
 }
 
-// Función para avanzar al siguiente texto
+
 function avanzarTexto() {
-    contenedorTexto.removeEventListener('click', avanzarTexto); // Quitamos el listener después del clic
+    clearInterval(intervalo); // ⛔ Detiene la escritura actual
 
-    if (indiceTexto < textos.length - 1) {
+    if (indiceLetra < textos[indiceTexto].length) {
+        // 🟡 Si el texto aún no estaba completo, lo completa inmediatamente
+        contenedorTexto.innerHTML = textos[indiceTexto];
+        indiceLetra = textos[indiceTexto].length;
+    } else if (indiceTexto < textos.length - 1) {
+        // ✅ Pasa al siguiente texto
         indiceTexto++;
-        indiceLetra = 0;
-        contenedorTexto.innerHTML = "";
-        intervalo = setInterval(escribirTexto, 100); // Reanudar el intervalo para escribir el siguiente texto
+        escribirTexto();
     } else {
-        iniciarExperiencia(); // Comienza la experiencia al terminar los textos
+        // ✅ Comienza la experiencia si era el último texto
+        iniciarExperiencia();
     }
 }
 
-// Inicializamos la escritura del primer texto
-intervalo = setInterval(escribirTexto, 100);
 
-// Función para iniciar el proceso de escritura del texto
-function mostrarSiguienteTexto() {
+////////////////////// Inicialización
+window.onload = () => {
     escribirTexto();
-}
+    const slider = document.getElementById("ano-slider");
+    slider.addEventListener("input", actualizarAño); // esta línea es clave
+    contenedorTexto.addEventListener("click", avanzarTexto);
+};

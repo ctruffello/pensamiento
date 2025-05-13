@@ -9,10 +9,7 @@
 </head>
 <body>
     <!-- Pantalla inicial con botón -->
-    <div class="pantalla-inicial">
-        <h1>Bienvenido a los Campamentos en Chile</h1>
-        <button onclick="iniciarExperiencia()">Comenzar la experiencia</button>
-    </div>
+
 
     <div id="cuadrado-campamentos"></div>
     <!-- Slider de años -->
@@ -22,16 +19,19 @@
         <div id="ano-value"></div>
     </div>
 
-    <!-- Imagen de personaje o elemento visual inicial -->
-    <div id="niño">
+    <!-- Niño y globo de texto (ahora centrados) -->
+    <div id="niño-container">
+        <div id="globo-texto" onclick="mostrarSiguienteTexto()">
+            <div id="texto-dinamico-globo"></div>
+        </div>
         <img src="img/niño.png" alt="Niño" id="niño-img">
     </div>
 
-    <!-- Burbuja de texto con información interactiva -->
-    <div id="globo-texto" onclick="mostrarSiguienteTexto()">
-        <img src="img/globo_texto.png" alt="Globo_texto" id="globo_texto-img">
-        <div id="texto-dinamico-globo"></div>
+    <!-- Contador de espera (oculto al inicio) -->
+    <div id="espera-acumulada" style="display: none;">
+        Años de espera acumulados: <span id="contador-espera">255.000</span> años
     </div>
+      
 
     <!-- Vincular JavaScript -->
     <script src="script.js"></script>

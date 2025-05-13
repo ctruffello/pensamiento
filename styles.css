@@ -4,34 +4,77 @@ body {
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     min-height: 100vh;
-    text-align: center;
+    position: relative;
 }
 
-.pantalla-inicial {
+/* Contenedor centrado */
+#niño-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 100;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
-    width: 100%;
 }
 
+/* Globo de texto */
+#globo-texto {
+    position: relative;
+    max-width: 300px;
+    padding: 40px 30px;
+    font-size: 14px;
+    color: #000;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    line-height: 1.4;
+    background-image: url('img/globo_texto.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    box-sizing: border-box;
+    z-index: 2;
+}
+
+
+/* Texto dentro del globo */
+#texto-dinamico-globo {
+    color: #000;
+    font-size: 14px;
+    line-height: 1.4;
+    font-weight: bold;
+    max-width: 80%;
+    word-wrap: break-word;
+    text-align: center;
+    z-index: 3;
+}
+
+/* Imagen del niño */
+#niño-img {
+    width: 180px;
+    height: auto;
+    display: block;
+}
+
+/* Cuadrado para los puntos */
 #cuadrado-campamentos {
     width: 400px;
     height: 400px;
     position: relative;
     border: 2px solid #333;
-    margin: 20px auto; /* Centrado horizontal */
+    margin: 20px auto;
     display: none;
     background-color: white;
     overflow: hidden;
 }
 
+/* Controles */
 #controls-container {
     display: none;
     flex-direction: column;
@@ -46,90 +89,69 @@ body {
     margin: 20px 0;
 }
 
-#ano-label {
-    font-size: 18px;
-    font-weight: bold;
-    display: none;
-}
-
+#ano-label,
+#ano-value,
 #texto-dinamico {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     text-align: center;
     color: #333;
-    margin: 20px 0;
     display: none;
 }
 
-#ano-value {
-    font-size: 18px;
-    text-align: center;
-    display: none;
-}
-
+/* Puntos */
 .punto {
     width: 10px;
     height: 10px;
     background-color: #3b8e4f;
     border-radius: 50%;
     position: absolute;
-    opacity: 0; /* Inicialmente transparentes */
-    transform: scale(0.5); /* Empiezan más pequeños */
+    opacity: 0;
+    transform: scale(0.5);
     animation: aparecerPunto 0.8s ease-out forwards;
 }
 
 @keyframes aparecerPunto {
     to {
-        opacity: 1; /* Terminan completamente visibles */
-        transform: scale(1); /* Tamaño normal */
+        opacity: 1;
+        transform: scale(1);
     }
 }
 
-#niño-img {
+/* Imagen opcional encima del punto */
+.imagen-punto {
     position: absolute;
-    bottom: 20%;
-    right: 10%;
-    width: 180px;
+    width: 20px;
     height: auto;
-    object-fit: contain;
+    pointer-events: none;
 }
 
-#globo-texto {
-    position: absolute;
-    bottom: 50%; /* Ajusta la posición según lo desees */
-    right: 13%;
-    width: 240px; /* Tamaño reducido para asegurar que el texto cabe */
-    height: auto;
-    padding: 50px;
-    font-size: 14px;
-    color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center; /* Asegura que el texto esté centrado */
-    line-height: 1.2; /* Ajuste de espacio entre líneas */
-    overflow: hidden; /* Esconde el contenido que se desborde */
-    background-color: transparent; /* Fondo transparente para la burbuja */
-}
-
-#globo_texto-img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%; /* Asegura que la imagen ocupe todo el espacio de la burbuja */
-    height: 100%;
-    z-index: 0; /* Pone la imagen detrás del texto */
-}
-
-#texto-dinamico-globo {
+/* Tooltip */
+.tooltip {
     position: relative;
-    z-index: 1; /* Asegura que el texto esté encima de la imagen */
-    color: #000;
-    font-size: 14px; /* Ajusta el tamaño de la fuente */
-    line-height: 1.4; /* Espaciado entre líneas */
-    font-weight: bold;
-    max-width: 100%; /* Evita que el texto se salga de la burbuja */
-    word-wrap: break-word; /* Permite que el texto se ajuste */
-    padding: 0 4px; /* Asegura que el texto no toque los bordes */
-    text-align: center; /* Centra el texto dentro de la burbuja */
+    cursor: pointer;
+    text-decoration: underline;
+    color: #007BFF;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: max-content;
+    background-color: #333;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 5px 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.9em;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
 }
