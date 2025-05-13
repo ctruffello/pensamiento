@@ -9,6 +9,7 @@ body {
 }
 
 /* Contenedor centrado */
+
 #niño-container {
     position: fixed;
     top: 50%;
@@ -16,9 +17,7 @@ body {
     transform: translate(-50%, -50%);
     text-align: center;
     z-index: 100;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    transition: opacity 0.5s ease;
 }
 
 /* Globo de texto */

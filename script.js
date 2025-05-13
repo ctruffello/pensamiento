@@ -75,6 +75,21 @@ function generarPuntos(cantidad) {
         cuadrado.appendChild(contenedor);
     }
 }
+function moverNiño() {
+    const niñoContainer = document.getElementById('niño-container');
+    
+    // Primero hace fade out
+    niñoContainer.classList.add('hidden');
+    
+    // Después de la animación, lo mueve y hace fade in
+    setTimeout(() => {
+        niñoContainer.style.left = "80%";
+        niñoContainer.style.top = "50%";
+        niñoContainer.style.transform = "translateY(-50%)";
+        niñoContainer.classList.remove('hidden');
+    }, 500);
+}
+
 //////////////////////// Función para actualizar el año y mensaje
 function actualizarAño() {
     const index = parseInt(document.getElementById("ano-slider").value);
@@ -102,7 +117,8 @@ function actualizarValorSlider() {
 
 //////////////////////// Función para iniciar la experiencia
 function iniciarExperiencia() {
-    document.querySelector('.pantalla-inicial').style.display = 'none';
+    //document.getElementById('niño-container').style.display = 'none'; //oculta al niño
+    //document.querySelector('.pantalla-inicial').style.display = 'none';
     document.getElementById('cuadrado-campamentos').style.display = 'block';
     document.getElementById('texto-dinamico-globo').style.display = 'block';
     document.getElementById('controls-container').style.display = 'flex';
@@ -110,6 +126,7 @@ function iniciarExperiencia() {
     document.getElementById('ano-value').style.display = 'block';
     document.getElementById("espera-acumulada").style.display = "block";
 
+    moverNiño()
     actualizarAño();
 }
 
@@ -155,8 +172,10 @@ function avanzarTexto() {
     } else {
         // ✅ Comienza la experiencia si era el último texto
         iniciarExperiencia();
+        moverNiño(); // <-- Añade esta línea
     }
 }
+
 
 
 ////////////////////// Inicialización
