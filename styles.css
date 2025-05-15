@@ -1,85 +1,173 @@
-body, html {
+/* Estilos base */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-    height: 100%;
-    width: 100%;
-    font-family: sans-serif;
-    background-color: #f4f4f4;
+    min-height: 100vh;
+    position: relative;
 }
 
-.container {
+/* Contenedor centrado */
+
+#niño-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 100;
+    transition: opacity 0.5s ease;
+}
+
+#niño-container.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+/* Globo de texto */
+#globo-texto {
     position: relative;
-    width: 100%;
-    height: 100vh;
+    max-width: 300px;
+    padding: 40px 30px;
+    font-size: 14px;
+    color: #000;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    line-height: 1.4;
+    background-image: url('img/globo_texto.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    box-sizing: border-box;
+    z-index: 2;
+}
+
+
+/* Texto dentro del globo */
+#texto-dinamico-globo {
+    color: #000;
+    font-size: 14px;
+    line-height: 1.4;
+    font-weight: bold;
+    max-width: 80%;
+    word-wrap: break-word;
+    text-align: center;
+    z-index: 3;
+}
+
+/* Imagen del niño */
+#niño-img {
+    width: 180px;
+    height: auto;
+    display: block;
+}
+
+/* Cuadrado para los puntos */
+#cuadrado-campamentos {
+    width: 400px;
+    height: 400px;
+    position: relative;
+    border: 2px solid #333;
+    margin: 20px auto;
+    display: none;
+    background-color: white;
     overflow: hidden;
 }
 
-/* Imagen centrada */
-#campamento-container {
-    position: relative;
+/* Controles */
+#controls-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-#campamento-img {
-    max-width: 50%;
-    max-height: 50%;
-    object-fit: contain;
-    display: block;
+#ano-slider {
+    width: 80%;
+    margin: 20px 0;
 }
 
-#niño-img {
-    position: absolute;
-    bottom: 20%;
-    right: 10%;
-    width: 240px;
-    height: auto;
-    max-width: 200%;
-    max-height: 200%;
-    object-fit: contain;
-    display: block;
-}
-
-#globo-texto {
-    position: absolute;
-    bottom: 50%; /* Ajusta la posición según lo desees */
-    right: 13%;
-    width: 240px; /* Tamaño reducido para asegurar que el texto cabe */
-    height: auto;
-    padding: 50px;
-    font-size: 14px;
-    color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center; /* Asegura que el texto esté centrado */
-    line-height: 1.2; /* Ajuste de espacio entre líneas */
-    overflow: hidden; /* Esconde el contenido que se desborde */
-    background-color: transparent; /* Fondo transparente para la burbuja */
-}
-
-#globo_texto-img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%; /* Asegura que la imagen ocupe todo el espacio de la burbuja */
-    height: 100%;
-    /*object-fit: contain;*/
-    z-index: 0; /* Pone la imagen detrás del texto */
-}
-
+#ano-label,
+#ano-value,
 #texto-dinamico {
-    position: relative;
-    z-index: 1; /* Asegura que el texto esté encima de la imagen */
-    color: #000;
-    font-size: 14px; /* Ajusta el tamaño de la fuente */
-    line-height: 1.4; /* Espaciado entre líneas */
+    font-size: 18px;
     font-weight: bold;
-    max-width: 100%; /* Evita que el texto se salga de la burbuja */
-    word-wrap: break-word; /* Permite que el texto se ajuste */
-    padding: 0 4px; /* Asegura que el texto no toque los bordes */
-    text-align: center; /* Centra el texto dentro de la burbuja */
+    text-align: center;
+    color: #333;
+    display: none;
+}
+
+/* Puntos */
+.punto {
+    width: 10px;
+    height: 10px;
+    background-color: #3b8e4f;
+    border-radius: 50%;
+    position: absolute;
+    opacity: 0;
+    transform: scale(0.5);
+    animation: aparecerPunto 0.8s ease-out forwards;
+}
+
+@keyframes aparecerPunto {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Imagen opcional encima del punto */
+.imagen-punto {
+    position: absolute;
+    width: 20px;
+    height: auto;
+    pointer-events: none;
+}
+
+/* Tooltip */
+.tooltip {
+    position: relative;
+    cursor: pointer;
+    text-decoration: underline;
+    color: #007BFF;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: max-content;
+    background-color: #333;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 5px 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.9em;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+#espera-acumulada {
+    display: none; /* Ya lo tienes */
+    text-align: center;
+    margin: 20px auto; /* Centrado horizontal con margen */
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%; /* Ocupa todo el ancho disponible */
+    position: relative; /* Para posicionamiento absoluto de hijos si es necesario */
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente opcional */
+    border-radius: 8px; /* Bordes redondeados opcionales */
+    max-width: 400px; /* Ancho máximo para mejor lectura */
 }

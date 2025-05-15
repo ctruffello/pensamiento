@@ -3,47 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campamentos e Inmigración en Chile</title>
+    <title>Campamentos en Chile</title>
+    <!-- Vincular CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-    <!-- Contenedor principal de la página -->
-    <div class="container">
-
-        <!-- Imagen principal del campamento centrada -->
-        <div id="campamento-container">
-            <img src="img/campamento.jpg" alt="Imagen del campamento" id="campamento-img">
-        </div>
-        
-        <!-- Imagen de personaje o elemento visual inicial -->
-        <div id="niño">
-            <img src="img/niño.png" alt="Niño" id="niño-img">
-        </div>
-        
-        <!-- Burbuja de texto con información interactiva -->
-        <div id="globo-texto" onclick="mostrarSiguienteTexto()">
-            <img src="img/globo_texto.png" alt="Globo_texto" id="globo_texto-img">
-            <div id="texto-dinamico"></div>
-        </div>
-        
+    <!-- Pantalla inicial con botón -->
 
 
-
-
-
-        <!-- Botón para iniciar interacciones 
-        <button id="iniciar-btn" onclick="iniciarInteraccion()">Iniciar</button>-->
-        
-        <!-- Desplegable de ingresos líquidos (slider) 
-        <div id="slider-container">
-            <label for="ingresos">Ingresos líquidos mensuales:</label>
-            <input type="range" id="ingresos" min="0" max="3000000" value="1500000" oninput="actualizarIngresos()">
-            <span id="ingresos-valor">1,500,000</span>
-        </div> -->
-
+    <div id="cuadrado-campamentos"></div>
+    <!-- Slider de años -->
+    <div id="controls-container" style="display: none;">
+        <label id="ano-label" for="ano-slider">Año:</label>
+        <input type="range" id="ano-slider" min="0" max="11" step="1" value="0">
+        <div id="ano-value"></div>
     </div>
 
+    <!-- Niño y globo de texto (ahora centrados) -->
+    <div id="niño-container">
+        <div id="globo-texto" onclick="mostrarSiguienteTexto()">
+            <div id="texto-dinamico-globo"></div>
+        </div>
+        <img src="img/niño.png" alt="Niño" id="niño-img">
+    </div>
+
+    <!-- Contador de espera (oculto al inicio) -->
+    <div id="espera-acumulada" style="display: none;">
+        Años de espera acumulados: <span id="contador-espera">255.000</span> años
+    </div>
+      
+
+    <!-- Vincular JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>
