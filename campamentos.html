@@ -13,11 +13,16 @@
 
     <div id="cuadrado-campamentos"></div>
     <!-- Slider de años -->
-    <div id="controls-container" style="display: none;">
+    <div id="controls-container">
         <label id="ano-label" for="ano-slider">Año:</label>
         <input type="range" id="ano-slider" min="0" max="11" step="1" value="0">
         <div id="ano-value"></div>
     </div>
+
+    <div id="espera-acumulada">
+        Años de espera acumulados: <span id="contador-espera">255.000</span> años
+    </div>
+
 
     <!-- Niño y globo de texto (ahora centrados) -->
     <div id="niño-container">
@@ -28,9 +33,7 @@
     </div>
 
     <!-- Contador de espera (oculto al inicio) -->
-    <div id="espera-acumulada" style="display: none;">
-        Años de espera acumulados: <span id="contador-espera">255.000</span> años
-    </div>
+    
       
 
     <!-- Vincular JavaScript -->

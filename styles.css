@@ -67,11 +67,9 @@ body {
 
 /* Cuadrado para los puntos */
 #cuadrado-campamentos {
-    width: 400px;
-    height: 400px;
-    position: relative;
-    border: 2px solid #333;
-    margin: 20px auto;
+    width: 100%;
+    height: 100%;
+    position: absolute;
     display: none;
     background-color: white;
     overflow: hidden;
@@ -79,17 +77,24 @@ body {
 
 /* Controles */
 #controls-container {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    bottom: 0%;
     display: none;
     flex-direction: column;
     align-items: center;
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
+    z-index: 1;
 }
 
 #ano-slider {
+    position: relative;
     width: 80%;
     margin: 20px 0;
+    left:10%;
 }
 
 #ano-label,
@@ -160,13 +165,14 @@ body {
 }
 #espera-acumulada {
     display: none; /* Ya lo tienes */
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
     text-align: center;
-    margin: 20px auto; /* Centrado horizontal con margen */
     font-size: 18px;
     font-weight: bold;
-    width: 100%; /* Ocupa todo el ancho disponible */
-    position: relative; /* Para posicionamiento absoluto de hijos si es necesario */
-    padding: 10px;
+    width: 300px; /* Ocupa todo el ancho disponible */
+    position: absolute; /* Para posicionamiento absoluto de hijos si es necesario */
     background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente opcional */
     border-radius: 8px; /* Bordes redondeados opcionales */
     max-width: 400px; /* Ancho máximo para mejor lectura */
