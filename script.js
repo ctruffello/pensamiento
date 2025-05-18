@@ -1,22 +1,24 @@
 ///////////////////////////////////////////////// Datos de campamentos por año
 const datosCampamentos = [
-    { año: 2013, campamentos: 691, mensaje: "acá vivo y estos son mis vecinos" },
-    { año: 2014, campamentos: 681, mensaje: "" },
-    { año: 2015, campamentos: 693, mensaje: "" },
-    { año: 2016, campamentos: 660, mensaje: "" },
-    { año: 2017, campamentos: 702, mensaje: "" },
-    { año: 2018, campamentos: 741, mensaje: "" },
-    { año: 2019, campamentos: 802, mensaje: "" },
+    { año: 2013, familias: 691, mensaje: "acá vivo y estos son mis vecinos" },
+    { año: 2014, familias: 681, mensaje: "" },
+    { año: 2015, familias: 693, mensaje: "" },
+    { año: 2016, familias: 660, mensaje: "" },
+    { año: 2017, familias: 702, mensaje: "" },
+    { año: 2018, familias: 741, mensaje: "" },
+    { año: 2019, familias: 802, mensaje: "" },
     {
         año: 2020,
-        campamentos: 969,
+        familias: 969,
         mensaje: `En este último tiempo ha llegado mucha gente nueva al campamento, esto está muy relacionado a que hay una pandemia y la <span class="tooltip">tasa de desempleo<span class="tooltiptext">1000 personas sin empleo</span></span> ha aumentado`
     },
-    { año: 2021, campamentos: 969, mensaje: "" },
-    { año: 2022, campamentos: 1290, mensaje: "" },
-    { año: 2023, campamentos: 1290, mensaje: "" },
-    { año: 2024, campamentos: 1428, mensaje: "Actualmente han llegado nuevos vecinos y se han ido otros. Yo ya llevo mucho tiempo en este campamento y no sé cuanto tiempo seguiré acá" }
+    { año: 2021, familias: 969, mensaje: "" },
+    { año: 2022, familias: 1290, mensaje: "" },
+    { año: 2023, familias: 1290, mensaje: "" },
+    { año: 2024, familias: 1428, mensaje: "Actualmente han llegado nuevos vecinos y se han ido otros. Yo ya llevo mucho tiempo en este campamento y no sé cuanto tiempo seguiré acá" }
 ];
+
+posCasas = []; // Posiciones de las casas por año
 
 ///////////////////////////////////////////////////// Datos de familias por año
 const familiasPorAnyo = [
@@ -29,6 +31,55 @@ const promedioAnosEspera = 11;
 
 /////////////////////////////////////////////////////////////// Valor base inicial
 const valorBaseInicial = 72.576; // Inicia años acumulados en 2013
+
+//////////////////// Genera el número al azar (lo hice porque estaba muy repetido)
+function azarPosicion(rango, espaciado) {
+    return Math.floor(Math.random() * (rango - 30) / espaciado) * espaciado;
+}
+
+///////////////////////////////////// Genera las coordenadas de todas las casas
+function generarPosCasas() {
+    const cuadrado = document.getElementById("cuadrado-campamentos");
+    const ancho = cuadrado.offsetWidth;
+    const alto = cuadrado.offsetHeight;
+    const area1 = document.getElementById("espera-acumulada").getBoundingClientRect();
+    const area2 = document.getElementById("controls-container").getBoundingClientRect();
+    let coords = [];
+    const divisor = 100;
+    const espaciador = 20;
+    for (let i = 0; i<(familiasPorAnyo[1]/divisor);i++){
+        const x = azarPosicion(ancho, espaciador); // Restar el ancho aproximado de la imagen
+        const y = azarPosicion(alto, espaciador);
+        coords.push([x,y])
+    }
+    posCasas.push(coords.map(x=>x));
+    for (let i = coords.length; i<familiasPorAnyo[0]/divisor;i++){
+        const x = azarPosicion(ancho, espaciador); // Restar el ancho aproximado de la imagen
+        const y = azarPosicion(alto, espaciador);
+        coords.push([x,y])
+    }
+    posCasas.unshift(coords.map(x=>x));
+    for (let ind = 2; ind<familiasPorAnyo.length;ind++){
+        for (let i = coords.length; i<familiasPorAnyo[ind]/divisor;i++){
+            const x = azarPosicion(ancho, espaciador); // Restar el ancho aproximado de la imagen
+            const y = azarPosicion(alto, espaciador);
+            coords.push([x,y])
+        }
+        posCasas.push(coords.map(x=>x));
+    }
+    for (let i = 0; i < posCasas[posCasas.length-1].length; i++) {
+        const element = posCasas[posCasas.length-1][i];
+        while ((area1.left+15)<element[0] && element[0]<(area1.right-15) && area1.bottom+15>element[1]) {
+            element[0] = azarPosicion(ancho, espaciador); // Restar el ancho aproximado de la imagen
+            element[1] = azarPosicion(alto, espaciador);
+        }
+        while ((area2.left+15)<element[0] && element[0]<(area2.right-15) && area2.top-40<element[1]) {
+            element[0] = azarPosicion(ancho, espaciador); // Restar el ancho aproximado de la imagen
+            element[1] = azarPosicion(alto, espaciador);
+        }
+    }
+    console.log(area1.bottom,area1.left,area1.right);
+}
 
 //////////////////////////// Función para actualizar el contador de espera
 function actualizarContador() {
@@ -44,16 +95,16 @@ function actualizarContador() {
     document.getElementById("contador-espera").textContent = totalAnos.toLocaleString();
 }
 
+
 ///////////////////////// Función para generar puntos aleatorios
-///////////////////////// Función para generar puntos aleatorios
-function generarPuntos(cantidad) {
+function generarPuntos(ind) {
     const cuadrado = document.getElementById("cuadrado-campamentos");
     const ancho = cuadrado.offsetWidth;
     const alto = cuadrado.offsetHeight;
+    let indexArray = posCasas[ind];
 
     cuadrado.innerHTML = ""; // Limpiar
-
-    for (let i = 0; i < cantidad; i++) {
+    for (let i = 0; i < indexArray.length; i++) {
         const contenedor = document.createElement("div");
         contenedor.classList.add("punto-contenedor");
         
@@ -62,8 +113,8 @@ function generarPuntos(cantidad) {
         img.classList.add("imagen-punto");
 
         // Posicionamiento aleatorio
-        const x = Math.random() * (ancho - 30); // Restar el ancho aproximado de la imagen
-        const y = Math.random() * (alto - 30); // Restar el alto aproximado de la imagen
+        const x = indexArray[i][0]; // Restar el ancho aproximado de la imagen
+        const y = indexArray[i][1]; // Restar el alto aproximado de la imagen
 
         contenedor.style.position = "absolute";
         contenedor.style.left = `${x}px`;
@@ -75,6 +126,7 @@ function generarPuntos(cantidad) {
         cuadrado.appendChild(contenedor);
     }
 }
+
 function moverNiño() {
     const niñoContainer = document.getElementById('niño-container');
     
@@ -93,9 +145,10 @@ function moverNiño() {
 //////////////////////// Función para actualizar el año y mensaje
 function actualizarAño() {
     const index = parseInt(document.getElementById("ano-slider").value);
-    const { año, campamentos, mensaje } = datosCampamentos[index];
+    const { año, familias, mensaje } = datosCampamentos[index];
 
-    generarPuntos(Math.round(campamentos / 4));
+   // generarPuntos(Math.round(familias / 1.5));
+    generarPuntos(index);
     document.getElementById("ano-value").textContent = año;
 
     const textoGlobo = document.getElementById("texto-dinamico-globo");
@@ -121,12 +174,12 @@ function iniciarExperiencia() {
     //document.querySelector('.pantalla-inicial').style.display = 'none';
     document.getElementById('cuadrado-campamentos').style.display = 'block';
     document.getElementById('texto-dinamico-globo').style.display = 'block';
-    document.getElementById('controls-container').style.display = 'flex';
+    document.getElementById('controls-container').style.display = 'block';
     document.getElementById('ano-label').style.display = 'block';
     document.getElementById('ano-value').style.display = 'block';
     document.getElementById("espera-acumulada").style.display = "block";
-
-    moverNiño()
+    generarPosCasas();
+    moverNiño();
     actualizarAño();
 }
 
