@@ -1,21 +1,17 @@
 ///////////////////////////////////////////////// Datos de campamentos por año
 const datosCampamentos = [
-    { año: 2013, familias: 691, mensaje: "acá vivo y estos son mis vecinos" },
-    { año: 2014, familias: 681, mensaje: "" },
-    { año: 2015, familias: 693, mensaje: "" },
-    { año: 2016, familias: 660, mensaje: "" },
-    { año: 2017, familias: 702, mensaje: "" },
-    { año: 2018, familias: 741, mensaje: "" },
-    { año: 2019, familias: 802, mensaje: "" },
-    {
-        año: 2020,
-        familias: 969,
-        mensaje: `En este último tiempo ha llegado mucha gente nueva al campamento, esto está muy relacionado a que hay una pandemia y la <span class="tooltip">tasa de desempleo<span class="tooltiptext">1000 personas sin empleo</span></span> ha aumentado`
-    },
-    { año: 2021, familias: 969, mensaje: "" },
-    { año: 2022, familias: 1290, mensaje: "" },
-    { año: 2023, familias: 1290, mensaje: "" },
-    { año: 2024, familias: 1428, mensaje: "Actualmente han llegado nuevos vecinos y se han ido otros. Yo ya llevo mucho tiempo en este campamento y no sé cuanto tiempo seguiré acá" }
+    { año: 2013, familias: 691},
+    { año: 2014, familias: 681},
+    { año: 2015, familias: 693},
+    { año: 2016, familias: 660},
+    { año: 2017, familias: 702},
+    { año: 2018, familias: 741},
+    { año: 2019, familias: 802},
+    { año: 2020, familias: 969},
+    { año: 2021, familias: 969},
+    { año: 2022, familias: 1290},
+    { año: 2023, familias: 1290},
+    { año: 2024, familias: 1428}
 ];
 
 posCasas = []; // Posiciones de las casas por año
@@ -127,20 +123,6 @@ function generarPuntos(ind) {
     }
 }
 
-function moverNiño() {
-    const niñoContainer = document.getElementById('niño-container');
-    
-    // Primero hace fade out
-    niñoContainer.classList.add('hidden');
-    
-    // Después de la animación, lo mueve y hace fade in
-    setTimeout(() => {
-        niñoContainer.style.left = "80%";
-        niñoContainer.style.top = "50%";
-        niñoContainer.style.transform = "translateY(-50%)";
-        niñoContainer.classList.remove('hidden');
-    }, 500);
-}
 
 //////////////////////// Función para actualizar el año y mensaje
 function actualizarAño() {
@@ -151,13 +133,6 @@ function actualizarAño() {
     generarPuntos(index);
     document.getElementById("ano-value").textContent = año;
 
-    const textoGlobo = document.getElementById("texto-dinamico-globo");
-
-    if (mensaje && mensaje.trim() !== "") {
-        textoGlobo.innerHTML = mensaje;
-    } else {
-        textoGlobo.innerHTML = `Estamos en el año ${año}.`;
-    }
 
     actualizarContador(); // también actualizar contador al mover el año
 }
@@ -170,39 +145,39 @@ function actualizarValorSlider() {
 
 //////////////////////// Función para iniciar la experiencia
 function iniciarExperiencia() {
-    //document.getElementById('niño-container').style.display = 'none'; //oculta al niño
-    //document.querySelector('.pantalla-inicial').style.display = 'none';
+    // Ocultar el texto introductorio
+    document.getElementById('intro-texto').style.display = 'none';
+    //otros
     document.getElementById('cuadrado-campamentos').style.display = 'block';
-    document.getElementById('texto-dinamico-globo').style.display = 'block';
     document.getElementById('controls-container').style.display = 'block';
     document.getElementById('ano-label').style.display = 'block';
     document.getElementById('ano-value').style.display = 'block';
     document.getElementById("espera-acumulada").style.display = "block";
     generarPosCasas();
-    moverNiño();
     actualizarAño();
 }
 
 /////////////////////////// Textos de bienvenida
 const textos = [
-    "Hola, bienvenido a nuestro recorrido.",
-    "Aquí aprenderás sobre los campamentos en Chile.",
-    "Haz clic para comenzar la experiencia interactiva."
+    "Entre los años 2017 y 2024, según el Censo, la población nacional aumentó en un 5,2%",
+    "Sin embargo, el número de familias en campamentos creció un 196% durante el mismo periodo",
+    "Mientras tanto, estas familias esperan para obtener una solución habitacional definitiva en promedio 10, 15 o 17 años."
 ];
 
 let indiceTexto = 0;
-let indiceLetra = 0;
 let intervalo;
-const contenedorTexto = document.getElementById("texto-dinamico-globo");
+const textoIntro = document.getElementById("intro-texto");
+// Textos de introducción por pasos
+
 
 
 function escribirTexto() {
     const textoActual = textos[indiceTexto];
-    contenedorTexto.innerHTML = "";
+    textoIntro.innerHTML = "";
     indiceLetra = 0;
 
     intervalo = setInterval(() => {
-        contenedorTexto.innerHTML += textoActual.charAt(indiceLetra);
+        textoIntro.innerHTML += textoActual.charAt(indiceLetra);
         indiceLetra++;
         if (indiceLetra >= textoActual.length) {
             clearInterval(intervalo);
@@ -216,7 +191,7 @@ function avanzarTexto() {
 
     if (indiceLetra < textos[indiceTexto].length) {
         // 🟡 Si el texto aún no estaba completo, lo completa inmediatamente
-        contenedorTexto.innerHTML = textos[indiceTexto];
+        textoIntro.innerHTML = textos[indiceTexto];
         indiceLetra = textos[indiceTexto].length;
     } else if (indiceTexto < textos.length - 1) {
         // ✅ Pasa al siguiente texto
@@ -225,7 +200,6 @@ function avanzarTexto() {
     } else {
         // ✅ Comienza la experiencia si era el último texto
         iniciarExperiencia();
-        moverNiño(); // <-- Añade esta línea
     }
 }
 
@@ -236,5 +210,5 @@ window.onload = () => {
     escribirTexto();
     const slider = document.getElementById("ano-slider");
     slider.addEventListener("input", actualizarAño); // esta línea es clave
-    contenedorTexto.addEventListener("click", avanzarTexto);
+    textoIntro.addEventListener("click", avanzarTexto);
 };

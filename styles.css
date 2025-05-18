@@ -8,61 +8,24 @@ body {
     position: relative;
 }
 
-/* Contenedor centrado */
-
-#niño-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    z-index: 100;
-    transition: opacity 0.5s ease;
-}
-
-#niño-container.hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-/* Globo de texto */
-#globo-texto {
-    position: relative;
-    max-width: 300px;
-    padding: 40px 30px;
-    font-size: 14px;
-    color: #000;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    line-height: 1.4;
-    background-image: url('img/globo_texto.png');
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: transparent;
-    box-sizing: border-box;
-    z-index: 2;
-}
-
-
-/* Texto dentro del globo */
-#texto-dinamico-globo {
-    color: #000;
-    font-size: 14px;
-    line-height: 1.4;
-    font-weight: bold;
-    max-width: 80%;
-    word-wrap: break-word;
-    text-align: center;
-    z-index: 3;
-}
-
-/* Imagen del niño */
-#niño-img {
-    width: 180px;
-    height: auto;
-    display: block;
+/* Estilos para el texto introductorio centrado */
+#intro-texto {
+  font-size: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  color: #333;
+  max-width: 600px;
+  text-align: center;
+  position: fixed; /* Cambiado de relative a fixed */
+  top: 50%; /* Centrado vertical */
+  left: 50%; /* Centrado horizontal */
+  transform: translate(-50%, -50%); /* Ajuste fino del centrado */
+  z-index: 1000;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0; /* Eliminamos el margin anterior */
 }
 
 /* Cuadrado para los puntos */
