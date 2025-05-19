@@ -8,24 +8,40 @@ body {
     position: relative;
 }
 
+#seccion-inicial {
+    position: absolute;
+
+    top: 50%; /* Centrado vertical */
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 /* Estilos para el texto introductorio centrado */
 #intro-texto {
-  font-size: 20px;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
-  color: #333;
-  max-width: 600px;
-  text-align: center;
-  position: fixed; /* Cambiado de relative a fixed */
-  top: 50%; /* Centrado vertical */
-  left: 50%; /* Centrado horizontal */
-  transform: translate(-50%, -50%); /* Ajuste fino del centrado */
-  z-index: 1000;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: block;
-  margin: 0; /* Eliminamos el margin anterior */
+    font-size: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    color: #333;
+    max-width: 600px;
+    text-align: center;
+    position: relative; /* Cambiado de relative a fixed */
+    top: 50%; /* Centrado vertical */
+    left: 50%; /* Centrado horizontal */
+    transform: translate(-50%, 0); /* Ajuste fino del centrado */
+    z-index: 1000;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: block;
+    margin: 0; /* Eliminamos el margin anterior */
+}
+
+#avanzar-texto {
+    opacity: 0;
+    font-size: 13px;
+    color: #535252;
+    position: relative;
+    left: 15px;
+    top: 5px;
 }
 
 /* Cuadrado para los puntos */
