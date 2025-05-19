@@ -15,6 +15,8 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+
 /* Estilos para el texto introductorio centrado */
 #intro-texto {
     font-size: 20px;
@@ -55,18 +57,48 @@ body {
 }
 
 /* Controles */
-#controls-container {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0);
-    bottom: 0%;
-    display: none;
-    flex-direction: column;
+.flecha-navegacion {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 60px;
+    cursor: pointer;
+    color: #333;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.7);
+    width: 60px;
+    height: 60px;
+    display: flex;
     align-items: center;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    z-index: 1;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.flecha-navegacion:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-50%) scale(1.1);
+}
+
+#flecha-izquierda {
+    left: 20px;
+}
+
+#flecha-derecha {
+    right: 20px;
+}
+
+.indicador-ano {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 18px;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 8px 16px;
+    border-radius: 20px;
+    z-index: 100;
 }
 
 #ano-slider {
@@ -74,6 +106,7 @@ body {
     width: 80%;
     margin: 20px 0;
     left:10%;
+    display: none;
 }
 
 #ano-label,

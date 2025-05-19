@@ -1,20 +1,25 @@
-///////////////////////////////////////////////// Datos de campamentos por año
+///////////////////////////////////////////////// Datos de campamentos por año, cantidad de familias
 const datosCampamentos = [
-    { año: 2013, familias: 691},
-    { año: 2014, familias: 681},
-    { año: 2015, familias: 693},
-    { año: 2016, familias: 660},
-    { año: 2017, familias: 702},
-    { año: 2018, familias: 741},
-    { año: 2019, familias: 802},
-    { año: 2020, familias: 969},
-    { año: 2021, familias: 969},
-    { año: 2022, familias: 1290},
-    { año: 2023, familias: 1290},
-    { año: 2024, familias: 1428}
+    { año: 2013, familias: 691, espera: 17330},
+    { año: 2014, familias: 681, espera: 16953},
+    { año: 2015, familias: 693, espera: 20567},
+    { año: 2016, familias: 660, espera: 22135},
+    { año: 2017, familias: 702, espera: 23146},
+    { año: 2018, familias: 741, espera: 24552},
+    { año: 2019, familias: 802, espera: 26862},
+    { año: 2020, familias: 969, espera: 46613},
+    { año: 2021, familias: 969, espera: 55817},
+    { año: 2022, familias: 1290, espera: 65022},
+    { año: 2023, familias: 1290, espera: 66933},
+    { año: 2024, familias: 1428, espera: 86582}
 ];
 
-posCasas = []; // Posiciones de las casas por año
+posCasas = []; ///////////////////////////////////// Posiciones de las casas por año
+
+let indiceAnoActual = 0; // Comienza en 0, es decir, 2013. Indice contador para la flechas 
+const slider = document.getElementById("ano-slider");
+const flechaIzquierda = document.getElementById("flecha-izquierda");
+const flechaDerecha = document.getElementById("flecha-derecha");
 
 ///////////////////////////////////////////////////// Datos de familias por año
 const familiasPorAnyo = [
@@ -24,9 +29,6 @@ const familiasPorAnyo = [
 
 //////////////////////////////// Promedio de años de espera (en años)
 const promedioAnosEspera = 11;
-
-/////////////////////////////////////////////////////////////// Valor base inicial
-const valorBaseInicial = 72.576; // Inicia años acumulados en 2013
 
 //////////////////// Genera el número al azar (lo hice porque estaba muy repetido)
 function azarPosicion(rango, espaciado) {
@@ -39,7 +41,9 @@ function generarPosCasas() {
     const ancho = cuadrado.offsetWidth;
     const alto = cuadrado.offsetHeight;
     const area1 = document.getElementById("espera-acumulada").getBoundingClientRect();
-    const area2 = document.getElementById("controls-container").getBoundingClientRect();
+   // const area2 = document.getElementById("controls-container").getBoundingClientRect();
+
+
     let coords = [];
     const divisor = 100;
     const espaciador = 20;
@@ -69,26 +73,45 @@ function generarPosCasas() {
             element[0] = azarPosicion(ancho, espaciador); // Restar el ancho aproximado de la imagen
             element[1] = azarPosicion(alto, espaciador);
         }
-        while ((area2.left+15)<element[0] && element[0]<(area2.right-15) && area2.top-40<element[1]) {
-            element[0] = azarPosicion(ancho, espaciador); // Restar el ancho aproximado de la imagen
-            element[1] = azarPosicion(alto, espaciador);
-        }
+    //LO COMENTE pq falta agergar el grafico, cuando añadamos el grafico habria que hacer una area 2 del grafico
+      //  while ((area2.left+15)<element[0] && element[0]<(area2.right-15) && area2.top-40<element[1]) {
+        //    element[0] = azarPosicion(ancho, espaciador); // Restar el ancho aproximado de la imagen
+          //  element[1] = azarPosicion(alto, espaciador);
+        //}
     }
     console.log(area1.bottom,area1.left,area1.right);
 }
+
+
+flechaIzquierda.addEventListener("click", () => {
+    if (parseInt(slider.value) > parseInt(slider.min)) {
+        slider.value = parseInt(slider.value) - 1;
+        actualizarAño(); // misma función que el slider usa
+    }
+});
+
+flechaDerecha.addEventListener("click", () => {
+    if (parseInt(slider.value) < parseInt(slider.max)) {
+        slider.value = parseInt(slider.value) + 1;
+        actualizarAño(); // igual
+    }
+});
+
 
 //////////////////////////// Función para actualizar el contador de espera
 function actualizarContador() {
     const slider = document.getElementById("ano-slider");
     const ano = parseInt(slider.value);
+    
+    // Busca el año correspondiente en datosCampamentos
+    const datos = datosCampamentos.find(d => d.año === 2013 + ano);
 
-    let totalAnos = valorBaseInicial;
-
-    for (let i = 0; i <= ano; i++) {
-        totalAnos += familiasPorAnyo[i] * promedioAnosEspera;
+    // Si se encuentra, se actualiza el texto con el valor de espera
+    if (datos) {
+        document.getElementById("contador-espera").textContent = datos.espera.toLocaleString();
+    } else {
+        document.getElementById("contador-espera").textContent = "No disponible";
     }
-
-    document.getElementById("contador-espera").textContent = totalAnos.toLocaleString();
 }
 
 
@@ -147,16 +170,25 @@ function actualizarValorSlider() {
 function iniciarExperiencia() {
     // Ocultar el texto introductorio
     document.getElementById('seccion-inicial').style.display = 'none';
-    //otros
+    
+    // Mostrar elementos necesarios  CAMBIARRRR
     document.getElementById('cuadrado-campamentos').style.display = 'block';
-    document.getElementById('controls-container').style.display = 'block';
-    document.getElementById('ano-label').style.display = 'block';
+    document.getElementById('flecha-izquierda').style.display = 'flex';
+    document.getElementById('flecha-derecha').style.display = 'flex';
     document.getElementById('ano-value').style.display = 'block';
     document.getElementById("espera-acumulada").style.display = "block";
+    
+    // Asegurar dimensiones del contenedor
+    const cuadrado = document.getElementById("cuadrado-campamentos");
+    cuadrado.style.width = "100%";
+    cuadrado.style.height = "100vh";
+    cuadrado.style.position = "absolute";
+    cuadrado.style.top = "0";
+    cuadrado.style.left = "0";
+    
     generarPosCasas();
     actualizarAño();
 }
-
 /////////////////////////// Textos de bienvenida
 const textos = [
     "Entre los años 2017 y 2024, según el Censo, la población nacional aumentó en un 5,2%",

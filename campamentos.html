@@ -11,17 +11,6 @@
     <!-- Pantalla inicial con botón -->
 
 
-    <div id="cuadrado-campamentos"></div>
-    <!-- Slider de años -->
-    <div id="controls-container">
-        <label id="ano-label" for="ano-slider">Año:</label>
-        <input type="range" id="ano-slider" min="0" max="11" step="1" value="0">
-        <div id="ano-value"></div>
-    </div>
-
-    <div id="espera-acumulada">
-        Años de espera acumulados: <span id="contador-espera">255.000</span> años
-    </div>
 
     <!-- Texto dinámico-->
      <div id="seccion-inicial">
@@ -29,6 +18,18 @@
         <div id="avanzar-texto">Haz click para continuar</div>
      </div>
     
+    <div id="cuadrado-campamentos"></div>
+    <!-- Slider de años -->
+    <div id="flecha-izquierda" class="flecha-navegacion">‹</div>
+    <div id="flecha-derecha" class="flecha-navegacion">›</div>
+    <div id="ano-value" class="indicador-ano"></div>
+    <input type="range" id="ano-slider" min="0" max="11" step="1" value="0" style="display:none;">
+
+
+    <div id="espera-acumulada">
+        Familias esperando solución habitacional: <span id="contador-espera">255.000</span> 
+    </div>
+
 
 
     <!-- Contador de espera (oculto al inicio) -->
