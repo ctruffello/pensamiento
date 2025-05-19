@@ -146,7 +146,7 @@ function actualizarValorSlider() {
 //////////////////////// Función para iniciar la experiencia
 function iniciarExperiencia() {
     // Ocultar el texto introductorio
-    document.getElementById('intro-texto').style.display = 'none';
+    document.getElementById('seccion-inicial').style.display = 'none';
     //otros
     document.getElementById('cuadrado-campamentos').style.display = 'block';
     document.getElementById('controls-container').style.display = 'block';
@@ -166,6 +166,7 @@ const textos = [
 
 let indiceTexto = 0;
 let intervalo;
+let pulsar = false;
 const textoIntro = document.getElementById("intro-texto");
 // Textos de introducción por pasos
 
@@ -175,16 +176,33 @@ function escribirTexto() {
     const textoActual = textos[indiceTexto];
     textoIntro.innerHTML = "";
     indiceLetra = 0;
-
-    intervalo = setInterval(() => {
+    let intervalo = setInterval(() => {
         textoIntro.innerHTML += textoActual.charAt(indiceLetra);
         indiceLetra++;
         if (indiceLetra >= textoActual.length) {
+            setTimeout(() => {
+                pulsar = true;
+                aparecerContinuar();
+            }, 4000);
             clearInterval(intervalo);
         }
     }, 50);
+
 }
 
+function aparecerContinuar() {
+    let i = 1;
+    let avanzar = document.getElementById("avanzar-texto");
+    document.getElementById("avanzar-texto").style.transition = "opacity 850ms";
+    let pulsacion = setInterval(() => {
+        avanzar.style.opacity = Math.floor(i / 26) % 2;
+        if (!pulsar) {
+            avanzar.style.opacity = 0;
+            clearInterval(pulsacion);
+        }
+        i++;
+    }, 50);
+}
 
 function avanzarTexto() {
     clearInterval(intervalo); // ⛔ Detiene la escritura actual
@@ -193,12 +211,20 @@ function avanzarTexto() {
         // 🟡 Si el texto aún no estaba completo, lo completa inmediatamente
         textoIntro.innerHTML = textos[indiceTexto];
         indiceLetra = textos[indiceTexto].length;
+        setTimeout(() => {
+            pulsar = true;
+            aparecerContinuar();
+        }, 2000);
     } else if (indiceTexto < textos.length - 1) {
         // ✅ Pasa al siguiente texto
+        document.getElementById("avanzar-texto").style.transition = "none";
+        pulsar = false
         indiceTexto++;
         escribirTexto();
     } else {
         // ✅ Comienza la experiencia si era el último texto
+        document.getElementById("avanzar-texto").style.transition = "none";
+        pulsar = false
         iniciarExperiencia();
     }
 }
