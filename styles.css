@@ -68,16 +68,21 @@ body {
     background: rgba(255, 255, 255, 0.7);
     width: 60px;
     height: 60px;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     transition: all 0.3s ease;
 }
 
-.flecha-navegacion:hover {
+#flecha-izquierda:hover {
     background: rgba(255, 255, 255, 0.9);
-    transform: translateY(-50%) scale(1.1);
+    transform: translateX(20%) translateY(-50%);
+}
+
+#flecha-derecha:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateX(-20%) translateY(-50%);
 }
 
 #flecha-izquierda {
@@ -141,7 +146,7 @@ body {
 /* Imagen opcional encima del punto */
 .imagen-punto {
     position: absolute;
-    width: 20px;
+    width: 15px;
     height: auto;
     pointer-events: none;
 }
