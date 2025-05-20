@@ -216,14 +216,25 @@ function generarPuntos(ind) {
 }
 
 
-//////////////////////// Función para actualizar el año y mensaje
+//////////////////////// Función para actualizar el año 
 function actualizarAño() {
     const index = parseInt(document.getElementById("ano-slider").value);
-    const { año, familias, mensaje } = datosCampamentos[index];
+    const { año, familias } = datosCampamentos[index];
+    const familias_situacion_campamento = familiasPorAnyo[index]
 
-   // generarPuntos(Math.round(familias / 1.5));
+
+    document.getElementById("ano-value").innerHTML = `
+        <span class="valor-ano">     ${año} </span> 
+        <span class="texto-ano">Cantidad de familias en situación de campamento: ${familias_situacion_campamento} </span><br>
+        <div class="equivalencia">
+            <img src="img/casita.png" class="icono-equivalencia">
+            <span> = 100 familias</span>
+        </div>
+        `;
+
+    //generarPuntos(Math.round(familias / 1.5));
     generarPuntos(index);
-    document.getElementById("ano-value").textContent = año;
+    //document.getElementById("ano-value").textContent = año;
 
 
     actualizarContador(); // también actualizar contador al mover el año
