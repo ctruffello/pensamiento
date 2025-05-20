@@ -130,14 +130,11 @@ function actualizarContador() {
     }
 }
 
-
-///////////////////////// Función para generar puntos aleatorios
-function generarPuntos(ind) {
+function animarGeneracion(ind) {
     const cuadrado = document.getElementById("cuadrado-campamentos");
-    const ancho = cuadrado.offsetWidth;
-    const alto = cuadrado.offsetHeight;
-    cuadrado.replaceChildren(); // Limpiar
-    for (let i = 0; i < familiasPorAño[ind]/divisor; i++) {
+    let i = 0;
+    let generacion = setInterval(() => {
+
         const element = posCasas[i];
         const contenedor = document.createElement("div");
         contenedor.classList.add("punto-contenedor");
@@ -145,23 +142,19 @@ function generarPuntos(ind) {
         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("width", "50");
         svg.setAttribute("height", "50");
-        svg.classList.add("imagen-punto", `color-${(ind - element[2]) * (element[2] != 100) + 100 * (element[2] == 100)}`)
+        svg.classList.add("imagen-punto", `color-${(ind - element[2]) * (element[2] != 100) + 100 * (element[2] == 100)}`);
 
+        
         const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
         use.setAttribute("href", "#casa");
-
+        
         svg.appendChild(use);
-
-
-        //const img = document.createElement("img");
-        //img.src = "img/casita.png";
-        //img.classList.add("imagen-punto");
-        //img.classList.add(`color-${(ind - element[2]) * (element[2] != 100) + 100 * (element[2] == 100)}`);
 
             // Posicionamiento aleatorio
         const x = element[0]; // Restar el ancho aproximado de la imagen
         const y = element[1]; // Restar el alto aproximado de la imagen
 
+        svg.id = `${x},${y}`;
         contenedor.style.position = "absolute";
         contenedor.style.left = `${x}px`;
         contenedor.style.top = `${y}px`;
@@ -170,8 +163,58 @@ function generarPuntos(ind) {
 
         contenedor.appendChild(svg);
         cuadrado.appendChild(contenedor);
+        i++;
+        if (i >= familiasPorAño[ind]/divisor - 1) {
+            clearInterval(generacion);
+        }
+    }, 1);
+}
+
+///////////////////////// Función para generar puntos aleatorios
+function generarPuntos(ind) {
+    if (añoAct == añoPrev) {
+        animarGeneracion(ind);
+    } else {
+        const cuadrado = document.getElementById("cuadrado-campamentos");
+        const ancho = cuadrado.offsetWidth;
+        const alto = cuadrado.offsetHeight;
+        cuadrado.replaceChildren(); // Limpiar
+        for (let i = 0; i < familiasPorAño[ind]/divisor; i++) {
+            const element = posCasas[i];
+            const contenedor = document.createElement("div");
+            contenedor.classList.add("punto-contenedor");
+
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("width", "50");
+            svg.setAttribute("height", "50");
+            svg.classList.add("imagen-punto", `color-${(ind - element[2]) * (element[2] != 100) + 100 * (element[2] == 100)}`)
+
+            const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+            use.setAttribute("href", "#casa");
+
+            svg.appendChild(use);
+
+
+            //const img = document.createElement("img");
+            //img.src = "img/casita.png";
+            //img.classList.add("imagen-punto");
+            //img.classList.add(`color-${(ind - element[2]) * (element[2] != 100) + 100 * (element[2] == 100)}`);
+
+                // Posicionamiento aleatorio
+            const x = element[0]; // Restar el ancho aproximado de la imagen
+            const y = element[1]; // Restar el alto aproximado de la imagen
+
+            contenedor.style.position = "absolute";
+            contenedor.style.left = `${x}px`;
+            contenedor.style.top = `${y}px`;
+            contenedor.style.width = "80px"; // Ajustar según tamaño de tu imagen
+            contenedor.style.height = "80px"; // Ajustar según tamaño de tu imagen
+
+            contenedor.appendChild(svg);
+            cuadrado.appendChild(contenedor);
         
-    }   
+        }   
+    }
     console.log(document.getElementById("cuadrado-campamentos").innerHTML);
 }
 
