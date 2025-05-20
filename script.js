@@ -22,10 +22,10 @@ const familiasPorAño = [
 ];
 
 
-const divisor = 120;
-const espaciador = 25;
+const divisor = 70;
+const espaciador = 20;
 const anchoPantalla = window.innerWidth;
-const altoPantalla = window.innerHeight;
+const altoPantalla = window.innerHeight+25; //revisar bien
 ///////////////////////////////////// Posiciones de las casas por año
 let posCasas = [];
             
@@ -122,15 +122,18 @@ function generarPosCasas() {
     }
     for (let ind = 2; ind < familiasPorAño.length; ind++) {
         for (let espera = Math.floor((datosCampamentos[ind]["espera"]-datosCampamentos[ind-1]["espera"])/divisor); espera >= 0; espera--) {
+            console.log(i,Math.floor(familiasPorAño[ind]/divisor),posCasas);
             const element = posCasas[i];
             element.push(ind);
             i++;
         }
+        console.log(i,Math.floor(familiasPorAño[ind]/divisor));
         while (i < Math.floor(familiasPorAño[ind]/divisor)) {
             const element = posCasas[i];
             element.push(100);
             i++;
         }
+        console.log(i,Math.floor(familiasPorAño[ind]/divisor));
     }
 }
 
@@ -184,7 +187,7 @@ function generarPuntos(ind) {
         svg.classList.add("imagen-punto", `color-${(ind - element[2]) * (element[2] != 100) + 100 * (element[2] == 100)}`)
 
         const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
-        use.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#casa");
+        use.setAttribute("href", "#casa");
 
         svg.appendChild(use);
 
@@ -215,13 +218,22 @@ function generarPuntos(ind) {
 //////////////////////// Función para actualizar el año y mensaje
 function actualizarAño() {
     const index = parseInt(document.getElementById("ano-slider").value);
-    const { año, familias, mensaje } = datosCampamentos[index];
+    const { año, familias } = datosCampamentos[index];
+    const familias_situacion_campamento = familiasPorAño[index];
     añoPrev = añoAct;
     añoAct = index;
+    document.getElementById("ano-value").innerHTML = `
+        <div class="valor-ano"> ${año} </div> 
+        <span class="texto-ano">Cantidad de familias en situación de campamento: ${familias_situacion_campamento} </span><br>
+        <div class="equivalencia">
+            <img src="img/casa.svg" class="icono-equivalencia">
 
+            <span> = ${divisor} familias</span>
+        </div>
+        `;
    // generarPuntos(Math.round(familias / 1.5));
     generarPuntos(index);
-    document.getElementById("ano-value").textContent = año;
+    //document.getElementById("ano-value").textContent = año;
 
 
     actualizarContador(); // también actualizar contador al mover el año

@@ -1,7 +1,7 @@
 /* Estilos base */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #F5F0E8;
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -9,20 +9,43 @@ body {
 }
 
 #seccion-inicial {
-    position: absolute;
-
-    top: 50%; /* Centrado vertical */
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 1000;
+    overflow: hidden;
 }
 
+#fondo-inicio {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('img/fondo_campamento.jpeg'); /* Cambia por tu imagen */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -100; /* Para que esté detrás del texto */
+    filter: brightness(0.4); /* Opcional: oscurece la imagen para mejor legibilidad */
+    opacity: 0.8;
+}
 
+#textos-iniciales {
+    position: relative;
+    display: inline-block;
+    top: 50%; /* Centrado vertical */
+    left: 50%; /* Centrado horizontal */
+    transform: translate(-50%, 0);
+}
 
 /* Estilos para el texto introductorio centrado */
 #intro-texto {
-    font-size: 20px;
+    font-size: 30px;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.9);
+    background-color:#F5F0E8;
     border-radius: 10px;
     color: #333;
     max-width: 600px;
@@ -30,7 +53,7 @@ body {
     position: relative; /* Cambiado de relative a fixed */
     top: 50%; /* Centrado vertical */
     left: 50%; /* Centrado horizontal */
-    transform: translate(-50%, 0); /* Ajuste fino del centrado */
+    transform: translate(-50%, -50%); /* Ajuste fino del centrado */
     z-index: 1000;
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -41,10 +64,10 @@ body {
 #avanzar-texto {
     opacity: 0;
     font-size: 13px;
-    color: #535252;
+    color: white;
     position: relative;
     left: 15px;
-    top: 5px;
+    top: -50px;
 }
 
 /* Cuadrado para los puntos */
@@ -53,7 +76,7 @@ body {
     height: 100%;
     position: absolute;
     display: none;
-    background-color: white;
+    background-color:#F5F0E8;
     overflow: hidden;
 }
 
@@ -116,13 +139,35 @@ body {
 }
 
 #ano-label,
-#ano-value,
+#ano-value {
+    display: flex;
+    justify-items: center;
+    flex-wrap: wrap;
+}
 #texto-dinamico {
     font-size: 18px;
     font-weight: bold;
     text-align: center;
     color: #333;
     display: none;
+}
+
+/* Añade esto al final de tu CSS */
+#ano-value {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+.texto-ano {
+    opacity: 0.9;
+    font-size: 0.9em;
+}
+
+.valor-ano {
+    font-weight: bold;
+    font-size: 1.1em;
 }
 
 /* Puntos */
@@ -147,7 +192,7 @@ body {
 /* Imagen opcional encima del punto */
 .imagen-punto {
     position: absolute;
-    width: 24px;
+    width: 16px;
     height: auto;
     pointer-events: none;
 }
@@ -195,6 +240,14 @@ body {
     border-radius: 8px; /* Bordes redondeados opcionales */
     max-width: 400px; /* Ancho máximo para mejor lectura */
     margin: 0 auto;
+}
+
+.icono-equivalencia {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    position: relative;
+    top: 2px;
 }
 
 .color--2 {
