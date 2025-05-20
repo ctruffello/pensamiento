@@ -14,55 +14,125 @@ const datosCampamentos = [
     { año: 2024, familias: 1428, espera: 86582}
 ];
 
-posCasas = []; ///////////////////////////////////// Posiciones de las casas por año
 
-let indiceAnoActual = 0; // Comienza en 0, es decir, 2013. Indice contador para la flechas 
+const divisor = 70;
+const espaciador = 15;
+const anchoPantalla = window.innerWidth;
+const altoPantalla = window.innerHeight;
+///////////////////////////////////// Posiciones de las casas por año
+let posCasas = [];
+for (let i = 0; i < Math.floor(altoPantalla/espaciador); i++) {
+    for (let j = 0; j < Math.floor(anchoPantalla/espaciador); j++) {
+        posCasas.push([j * espaciador, i * espaciador]);
+    }    
+}
+posCasas = permutar(posCasas);
+console.log(posCasas)
+            
 const slider = document.getElementById("ano-slider");
 const flechaIzquierda = document.getElementById("flecha-izquierda");
 const flechaDerecha = document.getElementById("flecha-derecha");
 
 ///////////////////////////////////////////////////// Datos de familias por año
 const familiasPorAnyo = [
-    30353, 29693, 36023, 38770, 40541, 43003, 47050,
-    81643, 81643, 113887, 113887, 142482 // se añadió 2024
+    30353, 29693, 36023, 38770, 40541, 43003, 47050, 81643, 97765, 113887, 117235, 120584
 ];
 
 //////////////////////////////// Promedio de años de espera (en años)
 const promedioAnosEspera = 11;
 
+function permutar(array) {
+    var i = array.length,
+        j = 0,
+        temp;
+    while (i--) {
+        j = Math.floor(Math.random() * (i+1));
+
+        // swap randomly chosen element with current element
+        temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
+
 //////////////////// Genera el número al azar (lo hice porque estaba muy repetido)
 function azarPosicion(rango, espaciado) {
-    return Math.floor(Math.random() * (rango - 30) / espaciado) * espaciado;
+    return Math.floor(Math.random() * (rango + 1) / espaciado);
+}
+
+function generarPosCasas() {
+    const area1 = document.getElementById("espera-acumulada").getBoundingClientRect();
+   // const area2 = document.getElementById("controls-container").getBoundingClientRect();
+    for (let i = 0; i<(familiasPorAnyo[1]/divisor);i++){
+        const x = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
+        const y = azarPosicion(altoPantalla, espaciador);
+        while (posCasas[y][x] != 0) {
+                const x = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
+                const y = azarPosicion(altoPantalla, espaciador);
+            }
+        posCasas[y][x] = 2;
+    }
+    for (let i = familiasPorAnyo[1]; i<familiasPorAnyo[0]/divisor;i++){
+        while (posCasas[y][x] != 0) {
+                const x = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
+                const y = azarPosicion(altoPantalla, espaciador);
+            }
+        posCasas[y][x] = 1;
+    }
+    for (let ind = 2; ind<familiasPorAnyo.length;ind++){
+        for (let i = (familiasPorAnyo[0] / divisor * (ind == 2)) + (familiasPorAnyo[ind - 1] / divisor * (ind != 2)); i<familiasPorAnyo[ind]/divisor;i++){
+            while (posCasas[y][x] != 0) {
+                const x = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
+                const y = azarPosicion(altoPantalla, espaciador);
+            }
+            posCasas[y][x] = ind + 1;
+        }
+    }
+    console.log(posCasas);
+    for (let i = 0; i < posCasas.length; i++) {
+        const element = posCasas[posCasas.length-1][i];
+        while ((area1.left+15)<element[0] && element[0]<(area1.right-15) && area1.bottom+15>element[1]) {
+            element[0] = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
+            element[1] = azarPosicion(altoPantalla, espaciador);
+        }
+    //LO COMENTE pq falta agergar el grafico, cuando añadamos el grafico habria que hacer una area 2 del grafico
+      //  while ((area2.left+15)<element[0] && element[0]<(area2.right-15) && area2.top-40<element[1]) {
+        //    element[0] = azarPosicion(ancho, espaciador); // Restar el ancho aproximado de la imagen
+          //  element[1] = azarPosicion(alto, espaciador);
+        //}
+    }
+    for (let i = 0; i < posCasas.length; i++) {
+        const element = posCasas[elem];
+        left = (area1.left + 15) / espaciador;
+        right = (anchoPantalla - area1.right + 15) / espaciador;
+        
+    }
 }
 
 ///////////////////////////////////// Genera las coordenadas de todas las casas
-function generarPosCasas() {
-    const cuadrado = document.getElementById("cuadrado-campamentos");
-    const ancho = cuadrado.offsetWidth;
-    const alto = cuadrado.offsetHeight;
+function generaPosCasas() {
     const area1 = document.getElementById("espera-acumulada").getBoundingClientRect();
    // const area2 = document.getElementById("controls-container").getBoundingClientRect();
 
 
     let coords = [];
-    const divisor = 100;
-    const espaciador = 20;
     for (let i = 0; i<(familiasPorAnyo[1]/divisor);i++){
-        const x = azarPosicion(ancho, espaciador); // Restar el ancho aproximado de la imagen
-        const y = azarPosicion(alto, espaciador);
+        const x = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
+        const y = azarPosicion(altoPantalla, espaciador);
         coords.push([x,y])
     }
     posCasas.push(coords.map(x=>x));
     for (let i = coords.length; i<familiasPorAnyo[0]/divisor;i++){
-        const x = azarPosicion(ancho, espaciador); // Restar el ancho aproximado de la imagen
-        const y = azarPosicion(alto, espaciador);
+        const x = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
+        const y = azarPosicion(altoPantalla, espaciador);
         coords.push([x,y])
     }
     posCasas.unshift(coords.map(x=>x));
     for (let ind = 2; ind<familiasPorAnyo.length;ind++){
         for (let i = coords.length; i<familiasPorAnyo[ind]/divisor;i++){
-            const x = azarPosicion(ancho, espaciador); // Restar el ancho aproximado de la imagen
-            const y = azarPosicion(alto, espaciador);
+            const x = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
+            const y = azarPosicion(altoPantalla, espaciador);
             coords.push([x,y])
         }
         posCasas.push(coords.map(x=>x));
@@ -70,8 +140,8 @@ function generarPosCasas() {
     for (let i = 0; i < posCasas[posCasas.length-1].length; i++) {
         const element = posCasas[posCasas.length-1][i];
         while ((area1.left+15)<element[0] && element[0]<(area1.right-15) && area1.bottom+15>element[1]) {
-            element[0] = azarPosicion(ancho, espaciador); // Restar el ancho aproximado de la imagen
-            element[1] = azarPosicion(alto, espaciador);
+            element[0] = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
+            element[1] = azarPosicion(altoPantalla, espaciador);
         }
     //LO COMENTE pq falta agergar el grafico, cuando añadamos el grafico habria que hacer una area 2 del grafico
       //  while ((area2.left+15)<element[0] && element[0]<(area2.right-15) && area2.top-40<element[1]) {
@@ -120,10 +190,9 @@ function generarPuntos(ind) {
     const cuadrado = document.getElementById("cuadrado-campamentos");
     const ancho = cuadrado.offsetWidth;
     const alto = cuadrado.offsetHeight;
-    let indexArray = posCasas[ind];
 
     cuadrado.innerHTML = ""; // Limpiar
-    for (let i = 0; i < indexArray.length; i++) {
+    for (let i = 0; i < familiasPorAnyo[ind]/divisor; i++) {
         const contenedor = document.createElement("div");
         contenedor.classList.add("punto-contenedor");
         
@@ -132,8 +201,8 @@ function generarPuntos(ind) {
         img.classList.add("imagen-punto");
 
         // Posicionamiento aleatorio
-        const x = indexArray[i][0]; // Restar el ancho aproximado de la imagen
-        const y = indexArray[i][1]; // Restar el alto aproximado de la imagen
+        const x = posCasas[i][0]; // Restar el ancho aproximado de la imagen
+        const y = posCasas[i][1]; // Restar el alto aproximado de la imagen
 
         contenedor.style.position = "absolute";
         contenedor.style.left = `${x}px`;
@@ -186,7 +255,7 @@ function iniciarExperiencia() {
     cuadrado.style.top = "0";
     cuadrado.style.left = "0";
     
-    generarPosCasas();
+    
     actualizarAño();
 }
 /////////////////////////// Textos de bienvenida
@@ -266,6 +335,7 @@ function avanzarTexto() {
 ////////////////////// Inicialización
 window.onload = () => {
     escribirTexto();
+    //generarPosCasas();
     const slider = document.getElementById("ano-slider");
     slider.addEventListener("input", actualizarAño); // esta línea es clave
     textoIntro.addEventListener("click", avanzarTexto);
