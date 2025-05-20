@@ -1,3 +1,5 @@
+import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
+
 ///////////////////////////////////////////////// Datos de campamentos por año, cantidad de familias
 const datosCampamentos = [
     { año: 2013, familias: 691, espera: 17330},
@@ -11,32 +13,30 @@ const datosCampamentos = [
     { año: 2021, familias: 969, espera: 55817},
     { año: 2022, familias: 1290, espera: 65022},
     { año: 2023, familias: 1290, espera: 66933},
-    { año: 2024, familias: 1428, espera: 86582}
+    { año: 2024, familias: 1428, espera: 68845}
+];
+
+///////////////////////////////////////////////////// Datos de familias por año
+const familiasPorAño = [
+    30353, 29693, 36023, 38770, 40541, 43003, 47050, 81643, 97765, 113887, 117235, 120584
 ];
 
 
-const divisor = 70;
-const espaciador = 15;
+const divisor = 120;
+const espaciador = 25;
 const anchoPantalla = window.innerWidth;
 const altoPantalla = window.innerHeight;
 ///////////////////////////////////// Posiciones de las casas por año
 let posCasas = [];
-for (let i = 0; i < Math.floor(altoPantalla/espaciador); i++) {
-    for (let j = 0; j < Math.floor(anchoPantalla/espaciador); j++) {
-        posCasas.push([j * espaciador, i * espaciador]);
-    }    
-}
-posCasas = permutar(posCasas);
-console.log(posCasas)
             
 const slider = document.getElementById("ano-slider");
 const flechaIzquierda = document.getElementById("flecha-izquierda");
 const flechaDerecha = document.getElementById("flecha-derecha");
+let añoPrev = 0;
+let añoAct = 0;
+let indiceLetra = 0;
 
-///////////////////////////////////////////////////// Datos de familias por año
-const familiasPorAnyo = [
-    30353, 29693, 36023, 38770, 40541, 43003, 47050, 81643, 97765, 113887, 117235, 120584
-];
+
 
 //////////////////////////////// Promedio de años de espera (en años)
 const promedioAnosEspera = 11;
@@ -61,54 +61,6 @@ function azarPosicion(rango, espaciado) {
     return Math.floor(Math.random() * (rango + 1) / espaciado);
 }
 
-function generarPosCasas() {
-    const area1 = document.getElementById("espera-acumulada").getBoundingClientRect();
-   // const area2 = document.getElementById("controls-container").getBoundingClientRect();
-    for (let i = 0; i<(familiasPorAnyo[1]/divisor);i++){
-        const x = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
-        const y = azarPosicion(altoPantalla, espaciador);
-        while (posCasas[y][x] != 0) {
-                const x = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
-                const y = azarPosicion(altoPantalla, espaciador);
-            }
-        posCasas[y][x] = 2;
-    }
-    for (let i = familiasPorAnyo[1]; i<familiasPorAnyo[0]/divisor;i++){
-        while (posCasas[y][x] != 0) {
-                const x = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
-                const y = azarPosicion(altoPantalla, espaciador);
-            }
-        posCasas[y][x] = 1;
-    }
-    for (let ind = 2; ind<familiasPorAnyo.length;ind++){
-        for (let i = (familiasPorAnyo[0] / divisor * (ind == 2)) + (familiasPorAnyo[ind - 1] / divisor * (ind != 2)); i<familiasPorAnyo[ind]/divisor;i++){
-            while (posCasas[y][x] != 0) {
-                const x = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
-                const y = azarPosicion(altoPantalla, espaciador);
-            }
-            posCasas[y][x] = ind + 1;
-        }
-    }
-    console.log(posCasas);
-    for (let i = 0; i < posCasas.length; i++) {
-        const element = posCasas[posCasas.length-1][i];
-        while ((area1.left+15)<element[0] && element[0]<(area1.right-15) && area1.bottom+15>element[1]) {
-            element[0] = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
-            element[1] = azarPosicion(altoPantalla, espaciador);
-        }
-    //LO COMENTE pq falta agergar el grafico, cuando añadamos el grafico habria que hacer una area 2 del grafico
-      //  while ((area2.left+15)<element[0] && element[0]<(area2.right-15) && area2.top-40<element[1]) {
-        //    element[0] = azarPosicion(ancho, espaciador); // Restar el ancho aproximado de la imagen
-          //  element[1] = azarPosicion(alto, espaciador);
-        //}
-    }
-    for (let i = 0; i < posCasas.length; i++) {
-        const element = posCasas[elem];
-        left = (area1.left + 15) / espaciador;
-        right = (anchoPantalla - area1.right + 15) / espaciador;
-        
-    }
-}
 
 ///////////////////////////////////// Genera las coordenadas de todas las casas
 function generaPosCasas() {
@@ -117,20 +69,20 @@ function generaPosCasas() {
 
 
     let coords = [];
-    for (let i = 0; i<(familiasPorAnyo[1]/divisor);i++){
+    for (let i = 0; i<(familiasPorAño[1]/divisor);i++){
         const x = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
         const y = azarPosicion(altoPantalla, espaciador);
         coords.push([x,y])
     }
     posCasas.push(coords.map(x=>x));
-    for (let i = coords.length; i<familiasPorAnyo[0]/divisor;i++){
+    for (let i = coords.length; i<familiasPorAño[0]/divisor;i++){
         const x = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
         const y = azarPosicion(altoPantalla, espaciador);
         coords.push([x,y])
     }
     posCasas.unshift(coords.map(x=>x));
-    for (let ind = 2; ind<familiasPorAnyo.length;ind++){
-        for (let i = coords.length; i<familiasPorAnyo[ind]/divisor;i++){
+    for (let ind = 2; ind<familiasPorAño.length;ind++){
+        for (let i = coords.length; i<familiasPorAño[ind]/divisor;i++){
             const x = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
             const y = azarPosicion(altoPantalla, espaciador);
             coords.push([x,y])
@@ -149,7 +101,37 @@ function generaPosCasas() {
           //  element[1] = azarPosicion(alto, espaciador);
         //}
     }
-    console.log(area1.bottom,area1.left,area1.right);
+}
+function generarPosCasas() {
+    for (let i = 0; i < Math.floor(altoPantalla/espaciador); i++) {
+        for (let j = 0; j < Math.floor(anchoPantalla/espaciador); j++) {
+            posCasas.push([j * espaciador, i * espaciador]);
+        }    
+    }
+    posCasas = permutar(posCasas);
+    let i = 0;
+    for (let espera = Math.floor(datosCampamentos[1]["espera"]/divisor); espera >= 0; espera--) {
+            const element = posCasas[i];
+            element.push(0);
+            i++;
+    }
+    while (i < Math.floor(familiasPorAño[0]/divisor)) {
+        const element = posCasas[i];
+        element.push(100);
+        i++;
+    }
+    for (let ind = 2; ind < familiasPorAño.length; ind++) {
+        for (let espera = Math.floor((datosCampamentos[ind]["espera"]-datosCampamentos[ind-1]["espera"])/divisor); espera >= 0; espera--) {
+            const element = posCasas[i];
+            element.push(ind);
+            i++;
+        }
+        while (i < Math.floor(familiasPorAño[ind]/divisor)) {
+            const element = posCasas[i];
+            element.push(100);
+            i++;
+        }
+    }
 }
 
 
@@ -190,29 +172,43 @@ function generarPuntos(ind) {
     const cuadrado = document.getElementById("cuadrado-campamentos");
     const ancho = cuadrado.offsetWidth;
     const alto = cuadrado.offsetHeight;
-
-    cuadrado.innerHTML = ""; // Limpiar
-    for (let i = 0; i < familiasPorAnyo[ind]/divisor; i++) {
+    cuadrado.replaceChildren(); // Limpiar
+    for (let i = 0; i < familiasPorAño[ind]/divisor; i++) {
+        const element = posCasas[i];
         const contenedor = document.createElement("div");
         contenedor.classList.add("punto-contenedor");
-        
-        const img = document.createElement("img");
-        img.src = "img/casita.png";
-        img.classList.add("imagen-punto");
 
-        // Posicionamiento aleatorio
-        const x = posCasas[i][0]; // Restar el ancho aproximado de la imagen
-        const y = posCasas[i][1]; // Restar el alto aproximado de la imagen
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("width", "50");
+        svg.setAttribute("height", "50");
+        svg.classList.add("imagen-punto", `color-${(ind - element[2]) * (element[2] != 100) + 100 * (element[2] == 100)}`)
+
+        const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+        use.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#casa");
+
+        svg.appendChild(use);
+
+
+        //const img = document.createElement("img");
+        //img.src = "img/casita.png";
+        //img.classList.add("imagen-punto");
+        //img.classList.add(`color-${(ind - element[2]) * (element[2] != 100) + 100 * (element[2] == 100)}`);
+
+            // Posicionamiento aleatorio
+        const x = element[0]; // Restar el ancho aproximado de la imagen
+        const y = element[1]; // Restar el alto aproximado de la imagen
 
         contenedor.style.position = "absolute";
         contenedor.style.left = `${x}px`;
         contenedor.style.top = `${y}px`;
-        contenedor.style.width = "30px"; // Ajustar según tamaño de tu imagen
-        contenedor.style.height = "30px"; // Ajustar según tamaño de tu imagen
+        contenedor.style.width = "80px"; // Ajustar según tamaño de tu imagen
+        contenedor.style.height = "80px"; // Ajustar según tamaño de tu imagen
 
-        contenedor.appendChild(img);
+        contenedor.appendChild(svg);
         cuadrado.appendChild(contenedor);
-    }
+        
+    }   
+    console.log(document.getElementById("cuadrado-campamentos").innerHTML);
 }
 
 
@@ -220,6 +216,8 @@ function generarPuntos(ind) {
 function actualizarAño() {
     const index = parseInt(document.getElementById("ano-slider").value);
     const { año, familias, mensaje } = datosCampamentos[index];
+    añoPrev = añoAct;
+    añoAct = index;
 
    // generarPuntos(Math.round(familias / 1.5));
     generarPuntos(index);
@@ -281,10 +279,8 @@ function escribirTexto() {
         textoIntro.innerHTML += textoActual.charAt(indiceLetra);
         indiceLetra++;
         if (indiceLetra >= textoActual.length) {
-            setTimeout(() => {
-                pulsar = true;
-                aparecerContinuar();
-            }, 4000);
+            pulsar = true;
+            aparecerContinuar();
             clearInterval(intervalo);
         }
     }, 50);
@@ -312,10 +308,9 @@ function avanzarTexto() {
         // 🟡 Si el texto aún no estaba completo, lo completa inmediatamente
         textoIntro.innerHTML = textos[indiceTexto];
         indiceLetra = textos[indiceTexto].length;
-        setTimeout(() => {
-            pulsar = true;
-            aparecerContinuar();
-        }, 2000);
+        pulsar = true;
+        aparecerContinuar();
+        
     } else if (indiceTexto < textos.length - 1) {
         // ✅ Pasa al siguiente texto
         document.getElementById("avanzar-texto").style.transition = "none";
@@ -335,7 +330,7 @@ function avanzarTexto() {
 ////////////////////// Inicialización
 window.onload = () => {
     escribirTexto();
-    //generarPosCasas();
+    generarPosCasas();
     const slider = document.getElementById("ano-slider");
     slider.addEventListener("input", actualizarAño); // esta línea es clave
     textoIntro.addEventListener("click", avanzarTexto);
