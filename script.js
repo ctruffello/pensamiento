@@ -1,4 +1,4 @@
-import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
+//import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
 
 ///////////////////////////////////////////////// Datos de campamentos por año, cantidad de familias
 const datosCampamentos = [
@@ -63,45 +63,6 @@ function azarPosicion(rango, espaciado) {
 
 
 ///////////////////////////////////// Genera las coordenadas de todas las casas
-function generaPosCasas() {
-    const area1 = document.getElementById("espera-acumulada").getBoundingClientRect();
-   // const area2 = document.getElementById("controls-container").getBoundingClientRect();
-
-
-    let coords = [];
-    for (let i = 0; i<(familiasPorAño[1]/divisor);i++){
-        const x = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
-        const y = azarPosicion(altoPantalla, espaciador);
-        coords.push([x,y])
-    }
-    posCasas.push(coords.map(x=>x));
-    for (let i = coords.length; i<familiasPorAño[0]/divisor;i++){
-        const x = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
-        const y = azarPosicion(altoPantalla, espaciador);
-        coords.push([x,y])
-    }
-    posCasas.unshift(coords.map(x=>x));
-    for (let ind = 2; ind<familiasPorAño.length;ind++){
-        for (let i = coords.length; i<familiasPorAño[ind]/divisor;i++){
-            const x = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
-            const y = azarPosicion(altoPantalla, espaciador);
-            coords.push([x,y])
-        }
-        posCasas.push(coords.map(x=>x));
-    }
-    for (let i = 0; i < posCasas[posCasas.length-1].length; i++) {
-        const element = posCasas[posCasas.length-1][i];
-        while ((area1.left+15)<element[0] && element[0]<(area1.right-15) && area1.bottom+15>element[1]) {
-            element[0] = azarPosicion(anchoPantalla, espaciador); // Restar el ancho aproximado de la imagen
-            element[1] = azarPosicion(altoPantalla, espaciador);
-        }
-    //LO COMENTE pq falta agergar el grafico, cuando añadamos el grafico habria que hacer una area 2 del grafico
-      //  while ((area2.left+15)<element[0] && element[0]<(area2.right-15) && area2.top-40<element[1]) {
-        //    element[0] = azarPosicion(ancho, espaciador); // Restar el ancho aproximado de la imagen
-          //  element[1] = azarPosicion(alto, espaciador);
-        //}
-    }
-}
 function generarPosCasas() {
     for (let i = 0; i < Math.floor(altoPantalla/espaciador); i++) {
         for (let j = 0; j < Math.floor(anchoPantalla/espaciador); j++) {
@@ -222,6 +183,8 @@ function actualizarAño() {
     const familias_situacion_campamento = familiasPorAño[index];
     añoPrev = añoAct;
     añoAct = index;
+
+    ///////////////////////////////////////////////////////////////////////////EXTOS DE ABAJO 
     document.getElementById("ano-value").innerHTML = `
         <div class="valor-ano"> ${año} </div> 
         <span class="texto-ano">Cantidad de familias en situación de campamento: ${familias_situacion_campamento} </span><br>
@@ -234,6 +197,39 @@ function actualizarAño() {
    // generarPuntos(Math.round(familias / 1.5));
     generarPuntos(index);
     //document.getElementById("ano-value").textContent = año;
+
+    document.getElementById('leyenda-colores').style.display = 'block';
+    /////////////////////////////////////////////////////////////////////////WARNINGS
+    if (año === 2020) {
+        const overlay = document.getElementById("overlay");
+        const textContainer = document.getElementById("text-container-warning");
+
+        overlay.style.display = "flex";
+
+        // Usamos innerHTML para insertar la estructura con imagen y contenedor de texto
+        textContainer.innerHTML = `
+            <div class="warning-content">
+                <img src="img/warningg.svg" class="icono-equivalencia warning-icon">
+                <span id="warning-title"> 2020 </span>
+            </div>
+            <div id="warning-description"> </div>`;
+        
+        document.getElementById("warning-title").style.opacity = 1;
+
+        // Obtenemos la referencia al elemento del texto
+        escribirTexto_Warnings("Están las secuelas del estallido social (2019) y<br>empieza la pandemia mundial del COVID.<br>Lo que aumenta la tasa de desempleo", 
+            document.getElementById("warning-description"), 
+            () => {
+                setTimeout(() => {
+                    overlay.style.display = "none";
+                }, 5000);
+            });}
+
+
+    else {
+        document.getElementById("overlay").style.display = "none";
+        clearTimeout(warningTimeout); // Cancelar cualquier timeout pendiente
+    }
 
 
     actualizarContador(); // también actualizar contador al mover el año
@@ -299,6 +295,40 @@ function escribirTexto() {
 
 }
 
+function escribirTexto_Warnings(texto, elemento, callback) {
+    let i = 0;
+    let buffer = "";
+    let escribiendoTag = false;
+    elemento.innerHTML = "";
+    elemento.style.opacity = 1;
+
+    const intervalo = setInterval(() => {
+        const char = texto[i];
+
+        if (char === "<") {
+            escribiendoTag = true;
+            buffer = "<";
+        } else if (char === ">" && escribiendoTag) {
+            buffer += ">";
+            elemento.innerHTML += buffer;
+            escribiendoTag = false;
+            buffer = "";
+        } else if (escribiendoTag) {
+            buffer += char;
+        } else {
+            elemento.innerHTML += char;
+        }
+
+        i++;
+
+        if (i >= texto.length) {
+            clearInterval(intervalo);
+            if (callback) callback();
+        }
+    }, 50);
+}
+
+
 function aparecerContinuar() {
     let i = 1;
     let avanzar = document.getElementById("avanzar-texto");
@@ -336,7 +366,6 @@ function avanzarTexto() {
         iniciarExperiencia();
     }
 }
-
 
 
 ////////////////////// Inicialización

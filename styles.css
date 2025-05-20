@@ -295,3 +295,74 @@ body {
 .color-100 {
     color: rgb(160, 160, 160);
 }
+
+
+#overlay {
+  position: fixed; /* Para que siempre esté sobre todo */
+  top: 0;
+  left: 0;
+  width: 100vw;  /* toda la pantalla */
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.1); /* fondo negro semi-transparente */
+  display: flex;
+  justify-content: center; /* centra horizontalmente */
+  align-items: center;     /* centra verticalmente */
+  z-index: 1000;           /* que esté encima de todo */
+  pointer-events: none;    /* el overlay recibe eventos */
+}
+
+#text-container-warning {
+  color: black;
+  font-size: 2rem;
+  font-weight: bold;
+  background-color: #F5F0E8;
+  padding: 20px 40px;
+  border-radius: 10px;
+  user-select: none;
+}
+
+.warning-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#warning-title {
+    font-size: 3rem;
+    font-weight: bold;
+    opacity: 1; /* Visible inmediatamente */
+    transition: opacity 0.3s;
+}
+
+#warning-description {
+    font-size: 1.5rem;
+    text-align: center;
+    min-height: 2rem;
+}
+.warning-icon {
+    width: 40px;
+    height: 40px;
+    /* Mantiene los estilos de icono-equivalencia pero con tamaño fijo */
+}
+
+#warning-text {
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}   
+
+#leyenda-colores {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2000; /* Mayor que los puntos y demás elementos */
+    background-color: #F5F0E8 
+    
+}
+
+#leyenda-colores img {
+    max-width: 50px;
+    height: auto;
+    display: block;
+}
