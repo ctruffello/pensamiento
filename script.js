@@ -178,6 +178,7 @@ function generarPuntos(ind) {
 
 //////////////////////// Función para actualizar el año y mensaje
 function actualizarAño() {
+    actualizarContador();
     const index = parseInt(document.getElementById("ano-slider").value);
     const { año, familias } = datosCampamentos[index];
     const familias_situacion_campamento = familiasPorAño[index];
@@ -199,6 +200,7 @@ function actualizarAño() {
     //document.getElementById("ano-value").textContent = año;
 
     document.getElementById('leyenda-colores').style.display = 'block';
+
     /////////////////////////////////////////////////////////////////////////WARNINGS
     if (año === 2020) {
         const overlay = document.getElementById("overlay");
@@ -232,7 +234,6 @@ function actualizarAño() {
     }
 
 
-    actualizarContador(); // también actualizar contador al mover el año
 }
 
 //////////////////////// Función para mostrar el valor del año en el slider
@@ -372,6 +373,7 @@ function avanzarTexto() {
 window.onload = () => {
     escribirTexto();
     generarPosCasas();
+    actualizarContador()
     const slider = document.getElementById("ano-slider");
     slider.addEventListener("input", actualizarAño); // esta línea es clave
     textoIntro.addEventListener("click", avanzarTexto);
